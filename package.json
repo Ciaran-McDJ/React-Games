@@ -7,10 +7,14 @@
     "@types/node": "12.0.10",
     "@types/react": "16.8.22",
     "@types/react-dom": "16.8.4",
+    "@types/react-redux": "^7.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
-    "typescript": "3.5.2"
+    "tslint": "^5.18.0",
+    "typescript": "3.5.2",
+    "typescript-tslint-plugin": "^0.5.3"
   },
   "scripts": {
     "start": "react-scripts start",

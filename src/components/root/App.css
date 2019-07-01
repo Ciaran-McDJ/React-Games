@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main {
+    /* all main containers should fill up the available space of the containing box. */
+    flex-grow: 1;
+}
+
+.BOX {
+    /* this is just for testing */
+    background-color: blue;
+    flex: 1;
+    margin: 10px;
+}
+/** these 2 are for the classes defined by ComponentUtil.Container */
+.FlexBox-row {
+    display: flex;
+    flex-direction: row;
+}
+.FlexBox-column {
+    display: flex;
+    flex-direction: column;
+}
+/*
+.FlexBox-row-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.FlexBox-column-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.FlexBox-grid {
+    display: flex;
+    flex-flow: row wrap;
+}
+*/

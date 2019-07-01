@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "tslint.alwaysShowRuleFailuresAsWarnings": false,
+        "tslint.configFile": "tslint.json",
+        "editor.formatOnSave": true,
+        "prettier.tabWidth": 4,
+		"prettier.tslintIntegration": true,
+		"editor.detectIndentation": false
+    }
+}
