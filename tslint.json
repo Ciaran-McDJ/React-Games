@@ -2,106 +2,202 @@
     "linterOptions": {
         "exclude": ["src/external/*"]
     },
+
+    // "extends": [
+    //     // your other plugins...
+    //     "eslint-plugin-react-hooks",
+    //     "tslint-react-hooks"
+    // ],
+    // "plugins": ["react-hooks"],
     "rules": {
-        "adjacent-overload-signatures": true,
-        "member-access": true,
-        "member-ordering": [
-            false,
-            {
-                "order": "fields-first"
-            }
-        ],
-        "no-reference": true,
-        "prefer-for-of": true,
-        "typedef": {
-            "severity": "off",
-            "options": ["property-declaration", "member-variable-declaration"]
-        },
-        "typedef-whitespace": {
-            "severity": "warn",
-            "options": [
-                {
-                    "call-signature": "nospace",
-                    "index-signature": "nospace",
-                    "parameter": "nospace",
-                    "property-declaration": "nospace",
-                    "variable-declaration": "nospace"
-                },
-                {
-                    "call-signature": "onespace",
-                    "index-signature": "onespace",
-                    "parameter": "onespace",
-                    "property-declaration": "onespace",
-                    "variable-declaration": "onespace"
-                }
-            ]
-        },
-        "await-promise": true,
-        "curly": true,
-        "forin": true,
-        "label-position": true,
-        "no-arg": true,
-        "no-conditional-assignment": true,
-        "no-construct": true,
-        "no-duplicate-super": true,
-        "no-duplicate-switch-case": true,
-        "no-dynamic-delete": true,
-        "no-eval": true,
-        "no-floating-promises": true,
-        "no-misused-new": true,
-        "no-shadowed-variable": true,
-        "no-sparse-arrays": true,
-        "no-switch-case-fall-through": true,
-        "no-unbound-method": true,
-        "no-unnecessary-class": true,
-        "no-unsafe-finally": true,
-        "no-var-keyword": true,
-        "no-unused-expression": false,
-        "prefer-object-spread": true,
-        "radix": true,
-        "restrict-plus-operands": true,
-        "switch-default": true,
-        "triple-equals": true,
-        "use-isnan": true,
-        "cyclomatic-complexity": [true, 10],
-        "deprecation": true,
-        "eofline": true,
-        "indent": [true, "spaces", 4],
-        "max-line-length": [
-            true,
-            {
-                "limit": 120,
-                "ignore-pattern": "<(.*?)>"
-            }
-        ],
-        "no-duplicate-imports": true,
-        "prefer-const": {
+        // "react-hooks-nesting": {
+        //     "severity": "error"
+        // },
+        // "eslint-plugin-react-hooks/exhaustive-deps": {
+        //     "severity": "error"
+        // },
+        // "adjacent-overload-signatures": true,
+        // "unified-signatures": true,
+        // "ban-comma-operator": true,
+        // "function-constructor": true,
+        // "member-access": true,
+        // "member-ordering": [
+        //     // I don't like enforcing ordering for public first, I know ordering based on usage is worse for long term
+        //     // maintainability but if a private helper function is used by only one method it should be grouped with it.
+        //     false,
+        //     {
+        //         "order": "fields-first"
+        //     }
+        // ],
+        // "no-reference": true,
+        "prefer-for-of": {
             "severity": "warn"
-        },
-        "prefer-readonly": [true, "only-inline-lambdas"],
-        "trailing-comma": [
-            true,
-            { "multiline": "always", "singleline": "never" }
-        ],
-        "class-name": true,
-        "comment-format": { "severity": "warn", "options": "check-space" },
-        "import-spacing": { "severity": "warn" },
-        "jsdoc-format": {
-            "severity": "warn",
-            "options": "check-multiline-start"
-        },
-        "no-angle-bracket-type-assertion": true,
-        "no-redundant-jsdoc": true,
-        "no-unnecessary-callback-wrapper": true,
-        "no-unnecessary-initializer": false,
-        "one-variable-per-declaration": true,
-        "prefer-template": true,
-        "quotemark": [true, "double", "jsx-double", "avoid-escape"],
-        "semicolon": [true, "always", "ignore-bound-class-methods"],
-        "strict-boolean-expressions": [
-            true,
-            "allow-boolean-or-undefined",
-            "ignore-rhs"
-        ]
+        }
+        // "typedef": {
+        //     // I'd really like to force non implicit any on pulbic / protected fields or exported members,
+        //     // allowing implicit any for reusing plain javascript is quite useful.
+        //     "severity": "off",
+        //     "options": ["property-declaration", "member-variable-declaration"]
+        // },
+        // "typedef-whitespace": {
+        //     "severity": "warn",
+        //     "options": [
+        //         {
+        //             "call-signature": "nospace",
+        //             "index-signature": "nospace",
+        //             "parameter": "nospace",
+        //             "property-declaration": "nospace",
+        //             "variable-declaration": "nospace"
+        //         },
+        //         {
+        //             "call-signature": "onespace",
+        //             "index-signature": "onespace",
+        //             "parameter": "onespace",
+        //             "property-declaration": "onespace",
+        //             "variable-declaration": "onespace"
+        //         }
+        //     ]
+        // },
+        // "await-promise": true,
+        // "no-async-without-await": true,
+        // "no-floating-promises": true,
+        // "curly": true,
+        // "forin": true,
+        // "no-for-in-array": true,
+        // "label-position": true,
+        // "no-arg": true,
+        // "no-conditional-assignment": {
+        //     // I'd really like a `if let var = thing` type construct to guard against undefined / null etc.
+        //     // maybe someday typescript (or javascript) will have such a construct.
+        //     "severity": "warn"
+        // },
+        // "no-construct": true,
+        // "no-debugger": {
+        //     // debugger is fine while debugging, but it should be removed before commiting code, so warning developer about it
+        //     // is good to keep them aware it is still there.
+        //     "severity": "warn"
+        // },
+        // "no-duplicate-super": true,
+        // "no-duplicate-switch-case": true,
+        // "no-dynamic-delete": true,
+        // "no-empty": {
+        //     // good to keep aware of empty blocks since even catch blocks should at minimum have a comment for
+        //     // why it is expected to catch and not handle anything.
+        //     "severity": "warn"
+        // },
+        // "no-eval": true,
+        // "no-invalid-template-strings": {
+        //     // Had a friend who wrote quite a bit of code thinking template syntax was used in normal strings
+        //     // this is good to be aware of.
+        //     "severity": "warn"
+        // },
+        // "no-internal-module": true, // IDK what this is
+        // "no-misused-new": true,
+        // "new-parens": true,
+        // "no-null-undefined-union": {
+        //     // Since library defined values like React.ReactNode use undefined or null this isn't feasible to use
+        //     "severity": "off"
+        // },
+        // "no-return-await": true,
+        // "no-shadowed-variable": true,
+        // "no-sparse-arrays": true,
+        // "no-string-literal": true,
+        // "no-string-throw": true,
+        // "no-switch-case-fall-through": {
+        //     // I personally think this might want to disable this but want to see how I use switch statements.
+        //     "severity": "warn"
+        // },
+        // "no-unbound-method": true,
+        // "no-unnecessary-class": true,
+        // "no-unsafe-any": {
+        //     // Want to see what case this comes
+        //     "severity": "warn"
+        // },
+        // "no-unsafe-finally": true,
+        // "no-var-keyword": true,
+        // "no-void-expression": [true, "ignore-arrow-function-shorthand"],
+        // "no-unused-expression": {
+        //     // usually this is a bug so good to be aware of.
+        //     "severity": "warn"
+        // },
+        // "no-duplicate-imports": true,
+        // "prefer-object-spread": true,
+        // "radix": true,
+        // "restrict-plus-operands": true,
+        // // switches should at minimum have a default with a comment explaining the cases it handles and why no handling is needed
+        // // more often something like exaustiveErrorCase should be used to ensure all possibilities of a union were checked.
+        // "switch-default": true,
+        // "triple-equals": true,
+        // "use-isnan": true,
+        // "cyclomatic-complexity": [true, 10],
+        // "deprecation": true,
+        // "prefer-const": {
+        //     // I'd like to force this but auto-save changing to const before I write the actual use of it
+        //     // gets in my way,
+        //     "severity": "warn"
+        // },
+        // "prefer-readonly": [true, "only-inline-lambdas"],
+        // "class-name": true,
+        // "no-angle-bracket-type-assertion": true, // need this for JSX consistency.
+        // "arrow-return-shorthand": true,
+        // "no-unnecessary-callback-wrapper": true,
+        // "no-unnecessary-initializer": false, // I LIKE to explicitly declare things as undefined, it is explicit!
+        // "unnecessary-bind": true,
+        // "strict-boolean-expressions": [
+        //     true,
+        //     "allow-boolean-or-undefined",
+        //     // the stupid thing has no way to allow "x = predicate && thing" but disallow "if(predicate && thing)"
+        //     // we need ignore-rhs to allow expected react expressions but have no way to enforce condtional statements are still
+        //     // booleans... dang it.
+        //     "ignore-rhs"
+        // ],
+        // "interface-over-type-literal": true, // if the interface just has static members it should be an interface.
+        // "prefer-template": true,
+        // "prefer-while": true,
+        // // Maintainability, mostly auto-fix formatting but also for reducing merge conflicts.
+        // "eofline": true,
+        // "indent": [true, "spaces", 4],
+        // "quotemark": [true, "double", "jsx-double", "avoid-escape"],
+        // "semicolon": [true, "always", "ignore-bound-class-methods"],
+        // "trailing-comma": [
+        //     true,
+        //     {
+        //         "multiline": {
+        //             // great thing, trailing commas are not allowed after a ...rest argument in function parameters
+        //             // not that the auto-fixer knows this, so we literally cannot compile when "Functions" is enabled
+        //             "objects": "always",
+        //             "arrays": "always",
+        //             "functions": "never", // *sigh*
+        //             "typeLiterals": "ignore"
+        //         },
+        //         "singleline": "never"
+        //     }
+        // ],
+        // "one-variable-per-declaration": true,
+        // "increment-decrement": true,
+        // "max-line-length": {
+        //     "severity": "warn",
+        //     "options": {
+        //         "limit": 120
+        //     }
+        // },
+        // "ordered-imports": {
+        //     // getting the auto-fixer to order imports is really nice :)
+        //     "severity": "warn",
+        //     "options": {
+        //         "import-sources-order": "lowercase-last",
+        //         "named-imports-order": "lowercase-last"
+        //     }
+        // },
+        // "no-trailing-whitespace": {
+        //     "severity": "warn",
+        //     "options": "ignore-blank-lines"
+        // },
+        // "comment-format": { "severity": "warn", "options": "check-space" },
+        // "import-spacing": { "severity": "warn" },
+        // "jsdoc-format": {
+        //     "severity": "warn",
+        //     "options": "check-multiline-start"
+        // }
     }
 }
