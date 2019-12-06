@@ -12,12 +12,12 @@ export class Asteroid extends React.Component<AsteroidProps> {
             <div
                 style={{
                     backgroundColor: this.props.color,
-                    height: "1vmax",
-                    width: "1vmax",
-                    borderRadius: "10000px",
+                    height: "1vmin",
+                    width: "1vmin",
+                    borderRadius: "10000vmin",
                     position: "absolute",
-                    bottom: this.props.y + "%",
-                    left: this.props.x + "%"
+                    top: this.props.y + "vmin",
+                    left: this.props.x + "vmin"
                 }}
             ></div>
         );

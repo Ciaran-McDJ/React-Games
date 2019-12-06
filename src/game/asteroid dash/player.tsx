@@ -29,11 +29,11 @@ export function Player(props: PlayerProps) {
     return (
         <div
             style={{
-                top: props.y + "vh",
-                left: props.x + "vw",
-                height: props.radius + "vmax",
-                width: props.radius + "vmax",
-                borderRadius: "100vmax",
+                top: props.y + "vmin",
+                left: props.x + "vmin",
+                height: props.radius + "vmin",
+                width: props.radius + "vmin",
+                borderRadius: "100vmin",
                 position: "absolute",
                 backgroundColor: "red"
             }}

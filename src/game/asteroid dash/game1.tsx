@@ -35,6 +35,8 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
                 style={{
                     width: "100vw",
                     height: this.state.maxHeightOfGame + "vh",
+                    maxWidth: "100vw",
+                    maxHeight: this.state.maxHeightOfGame + "vh",
                     overflow: "hidden"
                 }}
             >
@@ -94,7 +96,9 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
     makeAsteroid() {
         let newAsteroid: AsteroidProps = {
             x: 100,
-            y: Math.random() * this.state.maxHeightOfGame,
+            y:
+                Math.random() * this.state.maxHeightOfGame +
+                (100 - this.state.maxHeightOfGame),
             color: `rgb(${Math.random() * 255}, ${Math.random() *
                 255}, ${Math.random() * 255}) `
         };
@@ -112,17 +116,22 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         );
         this.setState({ asteroidPositions: x });
         this.state.asteroidPositions.map(coordinates =>
-            this.collisionCheck(() => console.log("OMG IT WORKED"), coordinates)
+            this.collisionCheck(() => this.gameOver(), coordinates)
         );
         // this.state.asteroidPositions.some
     }
     collisionCheck(run: Function, coordinate: AsteroidProps) {
-        let z = this.state.playerRadius + 1; /**radius of asteroid */
-        if (
-            Math.abs(this.state.playerx - coordinate.x) < z &&
-            Math.abs(this.state.playery - coordinate.y) < z
-        ) {
+        let maxCenterDistances =
+            this.state.playerRadius + 1; /**radius of asteroid */
+        let dx =
+            this.state.playerx + this.state.playerRadius - (coordinate.x + 1);
+        let dy =
+            this.state.playery + this.state.playerRadius - (coordinate.y + 1);
+        if (Math.sqrt(dx * dx + dy * dy) < maxCenterDistances) {
             run();
         }
+    }
+    gameOver() {
+        console.log("adsfhbhf");
     }
 }
