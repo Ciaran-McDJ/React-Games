@@ -54,7 +54,7 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         document.addEventListener("keyup", this.keyPress);
         window.setInterval(this.changeTimer.bind(this), 1000);
         window.setInterval(this.makeAsteroid.bind(this), 1000);
-        window.setInterval(this.moveAsteroids.bind(this), 500);
+        window.setInterval(this.updateAsteroids.bind(this), 500);
     }
     componentWillUnmount() {
         document.removeEventListener("keyup", this.keyPress);
@@ -97,7 +97,8 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         });
     }
 
-    moveAsteroids() {
+    //moves asteroids and checks if they collide with player
+    updateAsteroids() {
         this.state.asteroidPositions.map(coordinates => (coordinates.x -= 1));
 
         let x = this.state.asteroidPositions.filter(
