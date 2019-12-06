@@ -5,6 +5,8 @@ interface PlayerProps {
     x: number;
     /** y position in pixels */
     y: number;
+    /** radius of player */
+    radius: number;
 }
 // export class Player extends React.Component<PlayerProps> {
 //     render() {
@@ -29,11 +31,12 @@ export function Player(props: PlayerProps) {
             style={{
                 top: props.y + "vh",
                 left: props.x + "vw",
+                height: props.radius + "vmax",
+                width: props.radius + "vmax",
+                borderRadius: "100vmax",
                 position: "absolute",
                 backgroundColor: "red"
             }}
-        >
-            P
-        </div>
+        ></div>
     );
 }

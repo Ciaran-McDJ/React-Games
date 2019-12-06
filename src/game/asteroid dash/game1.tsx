@@ -11,6 +11,7 @@ interface GameState {
     timerTime: number;
     playerx: number;
     playery: number;
+    playerRadius: number;
     spawnAsteroid: number;
     asteroidPositions: AsteroidProps[];
     maxHeightOfGame: number;
@@ -22,6 +23,7 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         timerTime: 0,
         playerx: 20,
         playery: 20,
+        playerRadius: 2 /** in vmax */,
         spawnAsteroid: 0,
         asteroidPositions: [],
         maxHeightOfGame: 90
@@ -42,7 +44,11 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
                     time={this.state.timerTime}
                     backgroundColor={"blue"}
                 />
-                <Player x={this.state.playerx} y={this.state.playery} />
+                <Player
+                    x={this.state.playerx}
+                    y={this.state.playery}
+                    radius={this.state.playerRadius}
+                />
                 {this.state.asteroidPositions.map(coordinates => (
                     <Asteroid {...coordinates}></Asteroid>
                 ))}
@@ -105,6 +111,18 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
             coordinates => coordinates.x > 0
         );
         this.setState({ asteroidPositions: x });
-        console.log(this.state.asteroidPositions.length);
+        this.state.asteroidPositions.map(coordinates =>
+            this.collisionCheck(() => console.log("OMG IT WORKED"), coordinates)
+        );
+        // this.state.asteroidPositions.some
+    }
+    collisionCheck(run: Function, coordinate: AsteroidProps) {
+        let z = this.state.playerRadius + 1; /**radius of asteroid */
+        if (
+            Math.abs(this.state.playerx - coordinate.x) < z &&
+            Math.abs(this.state.playery - coordinate.y) < z
+        ) {
+            run();
+        }
     }
 }
