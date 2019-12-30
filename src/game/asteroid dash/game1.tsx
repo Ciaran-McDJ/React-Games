@@ -4,6 +4,7 @@ import { Asteroid, AsteroidProps } from "./asteroid";
 import { Player } from "./player";
 import { Timer } from "./timer";
 import { any, number } from "prop-types";
+import { Link } from "react-router-dom";
 interface GameProps {
     // game has no inputs
 }
@@ -15,7 +16,6 @@ interface GameState {
     spawnAsteroid: number;
     asteroidPositions: AsteroidProps[];
     maxHeightOfGame: number;
-    //temporaryAsteroidPositions: [];
 }
 
 export class AsteroidDash extends React.Component<GameProps, GameState> {
@@ -27,8 +27,8 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         spawnAsteroid: 0,
         asteroidPositions: [],
         maxHeightOfGame: 90
-        //temporaryAsteroidPositions: []
     };
+    intervalIDs: number[] = [];
     render() {
         return (
             <div
@@ -40,6 +40,7 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
                     overflow: "hidden"
                 }}
             >
+                <Link to="/">jfkandsjknfj</Link>
                 <Timer
                     x={0}
                     y={2}
@@ -60,12 +61,18 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
 
     componentDidMount() {
         document.addEventListener("keyup", this.keyPress);
-        window.setInterval(this.changeTimer.bind(this), 1000);
-        window.setInterval(this.makeAsteroid.bind(this), 1000);
-        window.setInterval(this.updateAsteroids.bind(this), 500);
+        this.intervalIDs = [
+            window.setInterval(this.changeTimer.bind(this), 1000),
+            window.setInterval(this.makeAsteroid.bind(this), 1000),
+            window.setInterval(this.updateAsteroids.bind(this), 500)
+        ];
     }
     componentWillUnmount() {
         document.removeEventListener("keyup", this.keyPress);
+        for (const intervalID of this.intervalIDs) {
+            window.clearInterval(intervalID);
+        }
+
         // TODO: remove event listeners, not simple with bind inline above.
     }
     keyPress = (event: KeyboardEvent) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { AsteroidDash } from "./asteroid dash/game1";
+import { MatchGame } from "./match/game2";
 import ReactDOM from "react-dom";
 import Counter from "components/counter";
 import { OpeningScreen } from "./opening menu/opening screen";
@@ -17,6 +18,10 @@ export function runGame() {
                 </Route>
                 <Route path="/asteroid-dash">
                     <AsteroidDash />
+                    {/* test code here */}
+                </Route>
+                <Route path="/match">
+                    <MatchGame />
                     {/* test code here */}
                 </Route>
                 <Route path="/">
