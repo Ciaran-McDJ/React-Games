@@ -29,7 +29,7 @@ export function OpeningScreen(props: PROPSTYPES) {
                     left: "50vw"
                 }}
             >
-                game to be made
+                <Link to="/match">Matching!!!</Link>
             </div>
             <div
                 style={{

@@ -40,7 +40,8 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
                     overflow: "hidden"
                 }}
             >
-                <Link to="/">jfkandsjknfj</Link>
+                <Link to="/">opening screen</Link>
+                <div></div>
                 <Timer
                     x={0}
                     y={2}
