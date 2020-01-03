@@ -3,10 +3,10 @@ import React from "react";
 import { Asteroid, AsteroidProps } from "./asteroid";
 import { Player } from "./player";
 import { Timer } from "./timer";
-import { any, number } from "prop-types";
 import { Link } from "react-router-dom";
 interface GameProps {
     // game has no inputs
+    onLose: () => void;
 }
 interface GameState {
     timerTime: number;
@@ -17,8 +17,53 @@ interface GameState {
     asteroidPositions: AsteroidProps[];
     maxHeightOfGame: number;
 }
+/**
+ * this hook uses the useReducer to start at 0 then increment by 1 each time the
+ * update callback is called
+ */
+//declare function useUpdater(): [number, () => void];
 
-export class AsteroidDash extends React.Component<GameProps, GameState> {
+// function useUpdater(): [number, () => void] {
+//     const [key, update] = React.useState(1);
+//     return [key, () => ()];
+// }
+export function AsteroidDash(props: {}) {
+    const [hasLost, updateLost] = React.useState(false);
+    const [key, remount] = React.useState(1); //useUpdater();
+    function restart() {
+        updateLost(false);
+        remount(key + 1);
+    }
+    function makeBox() {
+        if (hasLost) {
+            return (
+                <div
+                    style={{
+                        zIndex: 100,
+                        position: "absolute"
+                    }}
+                >
+                    YOU LOST!
+                    <button onClick={restart}>restart</button>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
+    return (
+        <div>
+            <AsteroidDashInner key={key} onLose={() => updateLost(true)} />
+            {makeBox()}
+        </div>
+    );
+
+    // AT some point when props are a thing we need to foraward them
+    // in this wrapper we will deal with finish message and resetting the game
+    // return <AsteroidDashInner />;
+}
+
+class AsteroidDashInner extends React.Component<GameProps, GameState> {
     state: GameState = {
         timerTime: 0,
         playerx: 20,
@@ -69,6 +114,9 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         ];
     }
     componentWillUnmount() {
+        this.cleanUpListeners();
+    }
+    cleanUpListeners() {
         document.removeEventListener("keyup", this.keyPress);
         for (const intervalID of this.intervalIDs) {
             window.clearInterval(intervalID);
@@ -123,12 +171,17 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
             coordinates => coordinates.x > 0
         );
         this.setState({ asteroidPositions: x });
-        this.state.asteroidPositions.map(coordinates =>
-            this.collisionCheck(() => this.gameOver(), coordinates)
-        );
+        if (
+            this.state.asteroidPositions.some(coordinates =>
+                this.collisionCheck(coordinates)
+            )
+        ) {
+            this.gameOver();
+        }
+
         // this.state.asteroidPositions.some
     }
-    collisionCheck(run: Function, coordinate: AsteroidProps) {
+    collisionCheck(coordinate: AsteroidProps) {
         let maxCenterDistances =
             this.state.playerRadius + 1; /**radius of asteroid */
         let dx =
@@ -136,10 +189,14 @@ export class AsteroidDash extends React.Component<GameProps, GameState> {
         let dy =
             this.state.playery + this.state.playerRadius - (coordinate.y + 1);
         if (Math.sqrt(dx * dx + dy * dy) < maxCenterDistances) {
-            run();
+            return true;
+        } else {
+            return false;
         }
     }
     gameOver() {
         console.log("adsfhbhf");
+        this.cleanUpListeners();
+        this.props.onLose();
     }
 }
