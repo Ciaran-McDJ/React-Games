@@ -52,10 +52,10 @@ export function AsteroidDash(props: {}) {
         }
     }
     return (
-        <div>
+        <React.Fragment>
             <AsteroidDashInner key={key} onLose={() => updateLost(true)} />
             {makeBox()}
-        </div>
+        </React.Fragment>
     );
 
     // AT some point when props are a thing we need to foraward them

@@ -7,8 +7,9 @@
     "settings": {
         "tslint.alwaysShowRuleFailuresAsWarnings": false,
         "tslint.configFile": "tslint.json",
-        "editor.formatOnSave": true,
+        // "editor.formatOnSave": true,
         "prettier.tabWidth": 4,
-		"editor.detectIndentation": false
+        "editor.detectIndentation": false,
+        "typescript.tsdk": "node_modules\\typescript\\lib"
     }
 }

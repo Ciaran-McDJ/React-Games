@@ -3,52 +3,57 @@ import { Link } from "react-router-dom";
 
 interface PROPSTYPES {}
 const styles: React.CSSProperties = {
-    width: "48vw",
-    height: "48vh",
+    width: "40%",
+    //height: "10vh",
     borderWidth: "1.5vw",
     borderColor: "red",
     borderStyle: "solid",
-    position: "absolute"
+    flexGrow: 1
 };
-export function OpeningScreen(props: PROPSTYPES) {
+
+export function OpeningScreen() {
     return (
-        <React.Fragment>
+        <div
+            style={{
+                backgroundColor: "rgba(0,254,254,0.5)",
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap"
+            }}
+        >
             <div
                 style={{
-                    ...styles,
-                    top: "0vh",
-                    left: "0vw"
+                    ...styles
                 }}
             >
                 <Link to="/asteroid-dash">Asteroids!!!</Link>
             </div>
             <div
                 style={{
-                    ...styles,
-                    top: "0vh",
-                    left: "50vw"
+                    ...styles
                 }}
             >
                 <Link to="/match">Matching!!!</Link>
             </div>
             <div
                 style={{
-                    ...styles,
-                    top: "50vh",
-                    left: "0vw"
+                    ...styles
                 }}
             >
-                game to be made
+                <Link to="/chase-the-sandwich">Chase That Sandwich!!!</Link>
             </div>
             <div
                 style={{
-                    ...styles,
-                    top: "50vh",
-                    left: "50vw"
+                    ...styles
                 }}
             >
                 game to be made
             </div>
-        </React.Fragment>
+        </div>
     );
+}
+
+export function OpeningScreen_old(props: PROPSTYPES) {
+    return <React.Fragment></React.Fragment>;
 }
