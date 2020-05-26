@@ -1,22 +1,36 @@
 import React from "react";
 import { HookedComponent } from "../../components/hooklib";
+import { useThing } from "../../Homemade Functions/get min size";
 import { Player } from "./Player";
-import {gameConfig} from "./config"
+import { gameConfigContext } from "./config";
+import { BallOfDeath } from "./BallOfDeath";
+import { useInterval } from "Homemade Functions/utils";
+
 export function ChaseTheSandwich() {
-    const actualSize = {width: 200, height: 300}
+    let gameConfig = React.useContext(gameConfigContext);
+    const playerRef = React.useRef<Player>(null);
     return (
-        <gameConfig.Provider value={actualSize}>
-        <svg
-            style={{
-                flexGrow: 1,
-                borderWidth: "1.5vw",
-                borderColor: "red",
-                borderStyle: "solid"
-            }}
-        >
-            <Player color={"red"}/>
-        </svg>
-        </gameConfig.Provider>
-        
+        <div style={{
+            display: "flex",
+            alignSelf: "center",
+            flexGrow: 1
+        }}>
+            <svg
+                style={{
+                    alignSelf: "center",
+                    width: gameConfig.gameWidth,
+                    height: gameConfig.gameHeight,
+                    borderWidth: 10,
+                    borderColor: "red",
+                    borderStyle: "solid",
+                }}
+            >
+                <Player ref={playerRef} color={"red"} />
+                <BallOfDeath color="black"/>
+            </svg>
+        </div>
     );
+    // function update(time: number) {
+    //     playerRef.current!.movePlayer(1);
+    // }
 }

@@ -1,15 +1,17 @@
 import React from "react";
 
-const defaultGameConfig = {
-    width: 300,
-    height: 200,
-    // /** turns percentage of width into pixel x value */
-    // widthPixel(percentage: number){
-    //     return percentage/100 * defaultGameConfig.width
-    // },
-    // /** turns percentage of height into pixel y value */
-    // heightPixel(percentage: number){
-    //     return percentage/100 * defaultGameConfig.height
-    // }
-}
-export const gameConfig = React.createContext(defaultGameConfig);
+export const defaultGameConfig = {
+    /** Pixels */
+    gameWidth: 300,
+    /** Pixels */
+    gameHeight: 300,
+
+    playerSpeed: 1,
+    // percent player moves per second
+    vPlayer: 50,
+    // percent ball of death moves per second
+    vBall: 50,
+    // frames per seccond
+    fps: 30,
+};
+export const gameConfigContext = React.createContext(defaultGameConfig);
