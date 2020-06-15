@@ -13,6 +13,8 @@ export const defaultGameConfig = {
     vBall: 100,
     // radius in %
     ballRadius: 6,
+    // radius in %
+    sandwichRadius: 3,
     // frames per seccond
     fps: 30,
 

@@ -8,10 +8,13 @@ import { useInterval } from "Homemade Functions/utils";
 import { stringify } from "querystring";
 import { listenerCount } from "cluster";
 import { map } from "lodash";
+import { Sandwich } from "./Sandwich";
+import { ballCollisionCheck } from "Homemade Functions/ballCollisionCheck";
 
 export function ChaseTheSandwich() {
     let gameConfig = React.useContext(gameConfigContext);
     const playerRef = React.useRef<Player>(null);
+    const sandwichRef = React.useRef<Sandwich>(null);
     let [refsOfBalls, changeRefsOfBalls] = React.useState([] as Array<React.RefObject<BallOfDeath>>)
     let [backgroundColor, changeBackgroundColor] = React.useState("white")
 
@@ -37,7 +40,7 @@ export function ChaseTheSandwich() {
                 }}
             >
                 <Player ref={playerRef} color={"red"} />
-
+                <Sandwich ref={sandwichRef} color="blue"/>
 
                 {refsOfBalls.map((ref)=><BallOfDeath ref={ref} color="black"/>)}
                 
@@ -50,7 +53,8 @@ export function ChaseTheSandwich() {
 
 
     function deathCollisionCheck(ballRef:React.RefObject<BallOfDeath>) {
-        if (Math.sqrt(Math.pow(Math.abs(playerRef.current!.playerX-ballRef.current!.ballX),2) + Math.pow(Math.abs(playerRef.current!.playerY-ballRef.current!.ballY),2)) < Math.abs(gameConfig.ballRadius + gameConfig.playerRadius)) {
+        if (ballCollisionCheck(gameConfig.ballRadius, gameConfig.playerRadius, ballRef.current!.ballX, playerRef.current!.playerX, ballRef.current!.ballY, playerRef.current!.playerY)) {
+            //Math.sqrt(Math.pow(Math.abs(playerRef.current!.playerX-ballRef.current!.ballX),2) + Math.pow(Math.abs(playerRef.current!.playerY-ballRef.current!.ballY),2)) < Math.abs(gameConfig.ballRadius + gameConfig.playerRadius)) {
             changeBackgroundColor("lightgreen")
             console.log("SOoooooo much math")
         }
@@ -63,6 +67,10 @@ export function ChaseTheSandwich() {
         for (let ref of refsOfBalls) {
             ref.current!.moveBall(time)
             deathCollisionCheck(ref)
+        }
+        if (ballCollisionCheck(gameConfig.sandwichRadius, gameConfig.playerRadius, sandwichRef.current!.sandwichX, playerRef.current!.playerX, sandwichRef.current!.sandwichY, playerRef.current!.playerY)) {
+            summonBallOfDeath()
+            sandwichRef.current!.repositionSandwich()
         }
     }
 }
