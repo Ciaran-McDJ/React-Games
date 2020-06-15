@@ -1,6 +1,6 @@
 import React from "react";
 import { HookedComponent, useEventListener } from "../../components/hooklib";
-import { gameConfigContext } from "./config";
+import { gameConfigContext, defaultGameConfig } from "./config";
 import { useInterval } from "Homemade Functions/utils";
 
 interface playerProps {
@@ -8,49 +8,68 @@ interface playerProps {
 }
 
 class _Player extends HookedComponent<playerProps> {
+
+    @HookedComponent.RenderAffecting
+    public playerX = 50;
+    @HookedComponent.RenderAffecting
+    public playerY = 50;
+    @HookedComponent.RenderAffecting
+    public mouseX = 0;
+    @HookedComponent.RenderAffecting
+    public mouseY = 0;
+
+
+    private gameConfig = defaultGameConfig;
+
+    private setMousePosition(event) {
+        this.mouseX = (event.offsetX / this.gameConfig.gameWidth) * 100;
+        this.mouseY = (event.offsetY / this.gameConfig.gameHeight) * 100;
+    }
+
+    public movePlayer(time: number) {
+        // time in seconds
+        // distances between player and mouse
+        let distX = this.mouseX - this.playerX;
+        let distY = this.mouseY - this.playerY;
+        let playerMouseDist = Math.sqrt(distX * distX + distY * distY);
+        if (this.gameConfig.vPlayer * time > playerMouseDist) {
+            this.playerX = this.mouseX;
+            this.playerY = this.mouseY;
+            return;
+        }
+        this.playerX = Math.max(
+            Math.min(
+                this.playerX +
+                    (distX / playerMouseDist) * (this.gameConfig.vPlayer * time),
+                100
+            ),
+            0
+        );
+        this.playerY = Math.max(
+            Math.min(
+                this.playerY +
+                    (distY / playerMouseDist) * (this.gameConfig.vPlayer * time),
+                100
+            ),
+            0
+        );
+    }
+
     public useRender(props: playerProps) {
-        let gameConfig = React.useContext(gameConfigContext);
-        useEventListener("mousemove", setMousePosition);
-        useInterval(() => movePlayer(1/gameConfig.fps), 1000/gameConfig.fps);
-        let [mouseX, changeMouseX] = React.useState(0);
-        let [mouseY, changeMouseY] = React.useState(0);
-        let [playerX, changePlayerX] = React.useState(50);
-        let [playerY, changePlayerY] = React.useState(50);
+        this.gameConfig = React.useContext(gameConfigContext);
+        useEventListener("mousemove", this.setMousePosition.bind(this));
+
+
         return (
             <circle
-                cx={playerX + "%"}
-                cy={playerY + "%"}
-                r={3 + "%"}
+                cx={this.playerX + "%"}
+                cy={this.playerY + "%"}
+                r={this.gameConfig.playerRadius + "%"}
                 stroke="black"
                 stroke-width="1"
                 fill={props.color}
             />
         );
-        function setMousePosition(event) {
-            changeMouseX((event.offsetX / gameConfig.gameWidth) * 100);
-            changeMouseY((event.offsetY / gameConfig.gameHeight) * 100);
-        }
-
-        function movePlayer(time: number) {
-            // time in seconds
-            // distances between player and mouse
-            let distX = mouseX - playerX;
-            let distY = mouseY - playerY;
-            let playerMouseDist = Math.sqrt(distX * distX + distY * distY);
-            if ((gameConfig.vPlayer*time)>(playerMouseDist)) {
-                changePlayerX(mouseX)
-                changePlayerY(mouseY)
-                return
-            }
-            changePlayerX(
-                Math.max(Math.min(playerX +
-                    (distX / playerMouseDist) * (gameConfig.vPlayer * time), 100), 0)
-            );
-            changePlayerY(
-                Math.max(Math.min(playerY +
-                    (distY / playerMouseDist) * (gameConfig.vPlayer * time), 100), 0)
-            );
-        }
     }
 }
 export const Player = HookedComponent.finalize(_Player);

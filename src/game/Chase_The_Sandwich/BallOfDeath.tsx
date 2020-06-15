@@ -23,7 +23,7 @@ class _BallOfDeath extends HookedComponent<ballProps> {
     
 
     
-    private moveBall(time: number) {
+    public moveBall(time: number) {
         // the positions that the ball will be set to
         let newX = 0
         let newY = 0
@@ -53,16 +53,14 @@ class _BallOfDeath extends HookedComponent<ballProps> {
         }
         this.ballX = newX
         this.ballY = newY
-        console.log(7)
     }
     public useRender(props: ballProps) {
         this.gameConfig = React.useContext(gameConfigContext);
-        useInterval(() => this.moveBall(1/30), 1000/30);
         return (
             <circle
                 cx={this.ballX + "%"}
                 cy={this.ballY + "%"}
-                r={5 + "%"}
+                r={this.gameConfig.ballRadius + "%"}
                 stroke="black"
                 stroke-width="1"
                 fill={props.color}
