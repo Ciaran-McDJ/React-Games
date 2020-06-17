@@ -2,12 +2,23 @@ import React from "react";
 import { HookedComponent, useEventListener } from "../../components/hooklib";
 import { gameConfigContext, defaultGameConfig } from "./config";
 import { useInterval } from "Homemade Functions/utils";
+// import { Ball } from "Homemade Functions/ballCollisionCheck";
 
 interface playerProps {
     color: string;
 }
 
-class _Player extends HookedComponent<playerProps> {
+class _Player extends HookedComponent<playerProps> {//implements Ball {
+
+    // get x(){
+    //     return this.playerX;
+    // }
+    // get y(){
+    //     return this.playerY;
+    // }
+    // get r(){
+    //     return this.gameConfig.playerRadius;
+    // }
 
     @HookedComponent.RenderAffecting
     public playerX = 50;

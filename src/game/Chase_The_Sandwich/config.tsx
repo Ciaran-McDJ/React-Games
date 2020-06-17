@@ -10,7 +10,7 @@ export const defaultGameConfig = {
     // radius in %
     playerRadius: 3,
     // percent ball of death moves per second
-    vBall: 100,
+    vBall: 70,
     // radius in %
     ballRadius: 6,
     // radius in %

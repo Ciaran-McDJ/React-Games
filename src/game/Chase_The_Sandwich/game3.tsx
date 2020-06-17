@@ -17,6 +17,7 @@ export function ChaseTheSandwich() {
     const sandwichRef = React.useRef<Sandwich>(null);
     let [refsOfBalls, changeRefsOfBalls] = React.useState([] as Array<React.RefObject<BallOfDeath>>)
     let [backgroundColor, changeBackgroundColor] = React.useState("white")
+    let [score, changeScore] = React.useState(0)
 
     useInterval(() => update(1/gameConfig.fps), 1000/gameConfig.fps);
 
@@ -26,8 +27,7 @@ export function ChaseTheSandwich() {
             alignSelf: "center",
             flexGrow: 1
         }}>
-            <button onClick={summonBallOfDeath}>Hello</button>
-            
+            score: {score}
             <svg
                 style={{
                     alignSelf: "center",
@@ -71,6 +71,7 @@ export function ChaseTheSandwich() {
         if (ballCollisionCheck(gameConfig.sandwichRadius, gameConfig.playerRadius, sandwichRef.current!.sandwichX, playerRef.current!.playerX, sandwichRef.current!.sandwichY, playerRef.current!.playerY)) {
             summonBallOfDeath()
             sandwichRef.current!.repositionSandwich()
+            changeScore(score + 1)
         }
     }
 }

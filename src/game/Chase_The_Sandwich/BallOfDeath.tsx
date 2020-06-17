@@ -9,9 +9,9 @@ interface ballProps {
 
 class _BallOfDeath extends HookedComponent<ballProps> {
     @HookedComponent.RenderAffecting
-    public ballX = 10;
+    public ballX = 0;
     @HookedComponent.RenderAffecting
-    public ballY = 10;
+    public ballY = 0;
 
     public gameConfig = defaultGameConfig;
     public angle = Math.random()*360;

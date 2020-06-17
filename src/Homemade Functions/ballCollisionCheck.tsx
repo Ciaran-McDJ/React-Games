@@ -15,3 +15,16 @@ export function ballCollisionCheck(
     ) < Math.abs(ball1r + ball2r)
     )
 }
+
+// export interface Ball {
+//     x: number;
+//     y: number;
+//     r: number;
+// }
+
+// function dist2D(dx: number, dy:number){
+//     return Math.sqrt(dx*dx + dy*dy);
+// }
+// export function collisionCheck(a: Ball, b: Ball){
+//     return dist2D(a.x-b.x, a.y-b.y) <= (a.r + b.r);
+// }
