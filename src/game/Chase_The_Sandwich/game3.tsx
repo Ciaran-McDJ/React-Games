@@ -15,63 +15,109 @@ export function ChaseTheSandwich() {
     let gameConfig = React.useContext(gameConfigContext);
     const playerRef = React.useRef<Player>(null);
     const sandwichRef = React.useRef<Sandwich>(null);
-    let [refsOfBalls, changeRefsOfBalls] = React.useState([] as Array<React.RefObject<BallOfDeath>>)
-    let [backgroundColor, changeBackgroundColor] = React.useState("white")
-    let [score, changeScore] = React.useState(0)
+    let [refsOfBalls, changeRefsOfBalls] = React.useState(
+        [] as Array<React.RefObject<BallOfDeath>>
+    );
+    let [score, changeScore] = React.useState(0);
+    let [gameOver, changeGameOver] = React.useState(false);
+    let [highScore, changeHighScore] = React.useState(0)
+    //state variables for changing config
+    let [newPlayerRadius, changeNewPlayerRadius] = React.useState(String(gameConfig.playerRadius))
 
-    useInterval(() => update(1/gameConfig.fps), 1000/gameConfig.fps);
+    useInterval(() => update(1 / gameConfig.fps), 1000 / gameConfig.fps);
 
     return (
-        <div style={{
-            display: "flex",
-            alignSelf: "center",
-            flexGrow: 1
-        }}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignSelf: "center",
+                flexGrow: 1,
+            }}
+        >
+            highscore: {highScore}
+            <br/>
             score: {score}
+            <br/>
+            {gameOver == false
+                ? "You didn't die yet, good job :)"
+                : "YOU DIED!!!!! :("}
+            <br/>
+            <br/>
+            Configurations below:
+            <input value={newPlayerRadius} onChange={(newInput)=>{changeNewPlayerRadius(newInput.target.value)}}></input>
+            <br/>
+            <button onClick={restart}>restart</button>
             <svg
                 style={{
                     alignSelf: "center",
-                    width: gameConfig.gameWidth,
-                    height: gameConfig.gameHeight,
+                    width: gameConfig.gameSize,
+                    height: gameConfig.gameSize,
                     borderWidth: 10,
                     borderColor: "red",
-                    backgroundColor: backgroundColor,
+                    backgroundColor: gameOver==true?"lightgreen":"white",
                     borderStyle: "solid",
                 }}
             >
                 <Player ref={playerRef} color={"red"} />
-                <Sandwich ref={sandwichRef} color="blue"/>
+                <Sandwich ref={sandwichRef} color="blue" />
 
-                {refsOfBalls.map((ref)=><BallOfDeath ref={ref} color="black"/>)}
-                
+                {refsOfBalls.map((ref) => (
+                    <BallOfDeath ref={ref} color="black" />
+                ))}
             </svg>
         </div>
     );
     function summonBallOfDeath() {
-        changeRefsOfBalls([...refsOfBalls,createRef()])
+        changeRefsOfBalls([...refsOfBalls, createRef()]);
     }
 
-
-    function deathCollisionCheck(ballRef:React.RefObject<BallOfDeath>) {
-        if (ballCollisionCheck(gameConfig.ballRadius, gameConfig.playerRadius, ballRef.current!.ballX, playerRef.current!.playerX, ballRef.current!.ballY, playerRef.current!.playerY)) {
-            //Math.sqrt(Math.pow(Math.abs(playerRef.current!.playerX-ballRef.current!.ballX),2) + Math.pow(Math.abs(playerRef.current!.playerY-ballRef.current!.ballY),2)) < Math.abs(gameConfig.ballRadius + gameConfig.playerRadius)) {
-            changeBackgroundColor("lightgreen")
-            console.log("SOoooooo much math")
+    function deathCollisionCheck(ballRef: React.RefObject<BallOfDeath>) {
+        if (
+            ballCollisionCheck(
+                gameConfig.ballRadius,
+                gameConfig.playerRadius,
+                ballRef.current!.ballX,
+                playerRef.current!.playerX,
+                ballRef.current!.ballY,
+                playerRef.current!.playerY
+            )
+        ) {
+            changeGameOver(true);
         }
     }
 
+    function restart() {
+        changeGameOver(false)
+        changeRefsOfBalls([])
+        changeScore(0)
 
+    }
 
     function update(time: number) {
-        playerRef.current!.movePlayer(1/gameConfig.fps);
+        playerRef.current!.movePlayer(1 / gameConfig.fps);
         for (let ref of refsOfBalls) {
-            ref.current!.moveBall(time)
-            deathCollisionCheck(ref)
+            ref.current!.moveBall(time);
+            deathCollisionCheck(ref);
         }
-        if (ballCollisionCheck(gameConfig.sandwichRadius, gameConfig.playerRadius, sandwichRef.current!.sandwichX, playerRef.current!.playerX, sandwichRef.current!.sandwichY, playerRef.current!.playerY)) {
-            summonBallOfDeath()
-            sandwichRef.current!.repositionSandwich()
-            changeScore(score + 1)
+        if (
+            ballCollisionCheck(
+                gameConfig.sandwichRadius,
+                gameConfig.playerRadius,
+                sandwichRef.current!.sandwichX,
+                playerRef.current!.playerX,
+                sandwichRef.current!.sandwichY,
+                playerRef.current!.playerY
+            )
+        ) {
+            summonBallOfDeath();
+            sandwichRef.current!.repositionSandwich(playerRef.current!.playerX, playerRef.current!.playerY);
+            if (gameOver == false) {
+                changeScore(score + 1);
+                if (score+1>highScore) {
+                    changeHighScore(score+1)
+                }
+            }
         }
     }
 }

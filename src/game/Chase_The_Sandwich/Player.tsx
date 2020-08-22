@@ -8,7 +8,8 @@ interface playerProps {
     color: string;
 }
 
-class _Player extends HookedComponent<playerProps> {//implements Ball {
+class _Player extends HookedComponent<playerProps> {
+    //implements Ball {
 
     // get x(){
     //     return this.playerX;
@@ -24,17 +25,15 @@ class _Player extends HookedComponent<playerProps> {//implements Ball {
     public playerX = 50;
     @HookedComponent.RenderAffecting
     public playerY = 50;
-    @HookedComponent.RenderAffecting
     public mouseX = 0;
-    @HookedComponent.RenderAffecting
     public mouseY = 0;
-
 
     private gameConfig = defaultGameConfig;
 
     private setMousePosition(event) {
-        this.mouseX = (event.offsetX / this.gameConfig.gameWidth) * 100;
-        this.mouseY = (event.offsetY / this.gameConfig.gameHeight) * 100;
+        //gives mouse position in percent of box
+        this.mouseX = (event.offsetX / this.gameConfig.gameSize) * 100;
+        this.mouseY = (event.offsetY / this.gameConfig.gameSize) * 100;
     }
 
     public movePlayer(time: number) {
@@ -51,7 +50,8 @@ class _Player extends HookedComponent<playerProps> {//implements Ball {
         this.playerX = Math.max(
             Math.min(
                 this.playerX +
-                    (distX / playerMouseDist) * (this.gameConfig.vPlayer * time),
+                    (distX / playerMouseDist) *
+                        (this.gameConfig.vPlayer * time),
                 100
             ),
             0
@@ -59,7 +59,8 @@ class _Player extends HookedComponent<playerProps> {//implements Ball {
         this.playerY = Math.max(
             Math.min(
                 this.playerY +
-                    (distY / playerMouseDist) * (this.gameConfig.vPlayer * time),
+                    (distY / playerMouseDist) *
+                        (this.gameConfig.vPlayer * time),
                 100
             ),
             0
@@ -69,7 +70,6 @@ class _Player extends HookedComponent<playerProps> {//implements Ball {
     public useRender(props: playerProps) {
         this.gameConfig = React.useContext(gameConfigContext);
         useEventListener("mousemove", this.setMousePosition.bind(this));
-
 
         return (
             <circle

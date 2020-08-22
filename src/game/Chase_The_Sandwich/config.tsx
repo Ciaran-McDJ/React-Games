@@ -1,10 +1,8 @@
 import React from "react";
 
 export const defaultGameConfig = {
-    /** Pixels */
-    gameWidth: 300,
-    /** Pixels */
-    gameHeight: 300,
+    /** Pixels of width and height */
+    gameSize: 300,
     // percent player moves per second
     vPlayer: 50,
     // radius in %

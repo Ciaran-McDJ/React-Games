@@ -1,6 +1,7 @@
 import React from "react";
 import { HookedComponent } from "../../components/hooklib";
 import { defaultGameConfig, gameConfigContext } from "./config";
+import { ballCollisionCheck } from "Homemade Functions/ballCollisionCheck";
 
 interface sandwichProps {
     color: string;
@@ -14,9 +15,24 @@ class _Sandwich extends HookedComponent<sandwichProps> {
 
     public gameConfig = defaultGameConfig;
 
-    public repositionSandwich() {
-        this.sandwichX = Math.random()*100
-        this.sandwichY = Math.random()*100
+    public repositionSandwich(playerX:number, playerY:number) {
+        let newX = Math.random()*100
+        let newY = Math.random()*100
+        let replaces = 0
+        while (ballCollisionCheck(7, 7, newX, playerX, newY, playerY)) {
+            newX = Math.random()*100
+            newY = Math.random()*100
+            replaces += 1
+            if (replaces > 5){
+                console.log("WHAT!!! THIS ACTUALLY HAPPENED!!!!!!")
+                break
+            }
+
+        }
+
+
+        this.sandwichX = newX
+        this.sandwichY = newY
     }
 
     public useRender(props: sandwichProps) {
