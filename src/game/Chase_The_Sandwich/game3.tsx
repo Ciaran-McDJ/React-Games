@@ -1,4 +1,5 @@
 import React, { createRef, useReducer } from "react";
+import ReactDom from "react-dom";
 import { HookedComponent } from "../../components/hooklib";
 import { useThing } from "../../Homemade Functions/get min size";
 import { Player } from "./Player";
@@ -21,20 +22,22 @@ export function ChaseTheSandwich() {
     let [score, changeScore] = React.useState(0);
     let [gameOver, changeGameOver] = React.useState(false);
     let [highScore, changeHighScore] = React.useState(0);
-    //state variables for changing config
-    //let [new, changeNew] = React.useState(String(gameConfig.))
-    let [newPlayerRadius, changeNewPlayerRadius] = React.useState(
-        String(gameConfig.playerRadius)
-    );
+
+    // Below is a bunch of config states
     type ConfigAsStrings = Record<keyof typeof gameConfig, number | string>;
+    // The up to date config that represents the inputs
     let [newConfig, changeNewConfig] = React.useReducer(
-        (prevState: ConfigAsStrings, arg: Partial<ConfigAsStrings>) => ({ ...prevState, ...arg }),
+        (prevState: ConfigAsStrings, arg: Partial<ConfigAsStrings>) => ({
+            ...prevState,
+            ...arg,
+        }),
         gameConfig
     );
-    // The up to date config that game is providing to children
+    // The config that game is providing to children and using itself
     let [actualConfig, changeActualConfig] = React.useState(gameConfig);
-
-    useInterval(() => update(1 / actualConfig.fps), 1000 / actualConfig.fps);
+    
+    useInterval(() => ReactDom.unstable_batchedUpdates(update, 1/actualConfig.fps), 1000 / actualConfig.fps);
+    // useInterval(() => update(1 / actualConfig.fps), 1000 / actualConfig.fps);
 
     return (
         <gameConfigContext.Provider value={actualConfig}>
@@ -56,15 +59,21 @@ export function ChaseTheSandwich() {
                 <br />
                 <br />
                 Configurations below:
-                <input
-                    // value={newPlayerRadius}
-                    // onChange={(newInput) => {
-                    //     changeNewPlayerRadius(newInput.target.value);
-                    // }}
-                    value={newConfig.ballRadius}
-                    onChange={(newInput) => changeNewConfig({ballRadius:newInput.target.value})}
-                ></input>
                 <br />
+                {Object.keys(actualConfig).map((aspect) => (
+                    <>
+                        
+                        <label>{aspect}</label>
+                        <input
+                            value={newConfig[aspect]}
+                            onChange={(newInput) =>
+                                changeNewConfig({
+                                    [aspect]: newInput.target.value,
+                                })
+                            }
+                        />
+                    </>
+                ))}
                 <button onClick={restart}>restart</button>
                 <svg
                     style={{
@@ -110,23 +119,21 @@ export function ChaseTheSandwich() {
         // }
     }
 
-    
-
     function restart() {
         changeGameOver(false);
         changeRefsOfBalls([]);
         changeScore(0);
         //Config that I will change all the properties from strings to numbers
         let numConfig = {} as typeof gameConfig;
-        let configProperties = Object.keys(newConfig)
+        let configProperties = Object.keys(newConfig);
         for (let aspect of configProperties) {
-            numConfig[aspect] = Number(newConfig [aspect])
+            numConfig[aspect] = Number(newConfig[aspect]);
         }
         changeActualConfig(numConfig);
     }
 
     function update(time: number) {
-        playerRef.current!.movePlayer(1 / actualConfig.fps);
+        playerRef.current!.movePlayer(time);
         for (let ref of refsOfBalls) {
             ref.current!.moveBall(time);
             deathCollisionCheck(ref);
