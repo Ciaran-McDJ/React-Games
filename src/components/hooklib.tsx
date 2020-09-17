@@ -101,7 +101,7 @@ export const effectEventListener = effectFactory(
 // have the same call signature as window.addEventListener.
 export function* EventListenerEffect<K extends keyof WindowEventMap>(
     type: K,
-    listener: (this: Window, ev: WindowEventMap[K]) => any,
+    listener: (ev: WindowEventMap[K]) => any,
     options?: boolean | AddEventListenerOptions
 ): GenEffect {
     yield arguments;
@@ -111,6 +111,7 @@ export function* EventListenerEffect<K extends keyof WindowEventMap>(
 }
 export const useEventListener = makeOwnHook(EventListenerEffect);
 
+type CHECK = Exclude<keyof WindowEventMap, keyof HTMLElementEventMap>
 //////////// HookedComponent
 /*
 Core idea is that you define a class with a method useRender(props) which is called when the component is rendered.

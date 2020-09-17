@@ -87,7 +87,7 @@ export function ChaseTheSandwich() {
                         borderStyle: "solid",
                     }}
                 >
-                    <Player ref={playerRef} color={"red"} />
+                    <Player ref={playerRef} color={actualConfig.p1colour} />
                     <Sandwich ref={sandwichRef} color="blue" />
 
                     {refsOfBalls.map((ref) => (
@@ -124,12 +124,19 @@ export function ChaseTheSandwich() {
         changeRefsOfBalls([]);
         changeScore(0);
         //Config that I will change all the properties from strings to numbers
-        let numConfig = {} as typeof gameConfig;
+        let tempConfig = {} as typeof gameConfig;
         let configProperties = Object.keys(newConfig);
         for (let aspect of configProperties) {
-            numConfig[aspect] = Number(newConfig[aspect]);
+            //convert from strings to numbers then put strings back as strings
+            tempConfig[aspect] = Number(newConfig[aspect]);
+            const TADHG = typeof "";
+            //TODO figure out how to make it generally all strings instead of that one specific one(or redo it and make it better)
+            if (aspect=="p1colour") {
+                console.log(aspect)
+                tempConfig[aspect] = String(newConfig[aspect]);
+            }
         }
-        changeActualConfig(numConfig);
+        changeActualConfig(tempConfig);
     }
 
     function update(time: number) {

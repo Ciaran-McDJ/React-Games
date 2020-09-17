@@ -15,6 +15,8 @@ export const defaultGameConfig = {
     sandwichRadius: 3,
     // frames per seccond
     fps: 30,
+    // colour of player 1
+    p1colour: "red"
 
 };
 export const gameConfigContext = React.createContext(defaultGameConfig);
