@@ -43,7 +43,7 @@ class _Sandwich extends HookedComponent<sandwichProps> {
                 cy={this.sandwichY + "%"}
                 r={this.gameConfig.sandwichRadius + "%"}
                 stroke="blue"
-                stroke-width="1"
+                strokeWidth="1"
                 fill={props.color}
             />
         );

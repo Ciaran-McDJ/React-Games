@@ -132,7 +132,6 @@ export function ChaseTheSandwich() {
             const TADHG = typeof "";
             //TODO figure out how to make it generally all strings instead of that one specific one(or redo it and make it better)
             if (aspect=="p1colour") {
-                console.log(aspect)
                 tempConfig[aspect] = String(newConfig[aspect]);
             }
         }

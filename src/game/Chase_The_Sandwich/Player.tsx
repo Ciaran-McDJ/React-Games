@@ -1,7 +1,7 @@
 import React from "react";
 import { HookedComponent, useEventListener } from "../../components/hooklib";
 import { gameConfigContext, defaultGameConfig } from "./config";
-import { useInterval } from "Homemade Functions/utils";
+import { useInterval, useMyEventListener } from "Homemade Functions/utils";
 // import { Ball } from "Homemade Functions/ballCollisionCheck";
 
 interface playerProps {
@@ -69,15 +69,15 @@ class _Player extends HookedComponent<playerProps> {
 
     public useRender(props: playerProps) {
         this.gameConfig = React.useContext(gameConfigContext);
-        useEventListener("mousemove", this.setMousePosition.bind(this));
-
+        useMyEventListener("mousemove", this.setMousePosition.bind(this));
+        //this.setMousePosition.bind(this)
         return (
             <circle
                 cx={this.playerX + "%"}
                 cy={this.playerY + "%"}
                 r={this.gameConfig.playerRadius + "%"}
                 stroke="black"
-                stroke-width="1"
+                strokeWidth="1"
                 fill={props.color}
             />
         );
