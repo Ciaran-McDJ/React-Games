@@ -17,7 +17,7 @@
         "react-router-dom": "^5.1.2",
         "react-scripts": "3.0.1",
         "redux-thunk": "^2.3.0",
-        "tslint": "^5.18.0",
+        "tslint": "^5.20.1",
         "tslint-react-hooks": "^2.1.1",
         "typescript": "^3.5.2",
         "typescript-tslint-plugin": "^0.5.3"
